@@ -15,6 +15,7 @@ export const RULE_CATALOG: RuleEntry[] = [
   { id: "C3", category: "Comments", principle: "No redundant comments", severity: "warn" },
   { id: "C4", category: "Comments", principle: "Write comments well if you must", severity: "info" },
   { id: "C5", category: "Comments", principle: "Never commit commented-out code", severity: "error" },
+  { id: "C6", category: "Comments", principle: "Write comments as a scannable narrative — reading just the comments should explain the code flow", severity: "info" },
   { id: "E1", category: "Environment", principle: "One command to build the project", severity: "info" },
   { id: "E2", category: "Environment", principle: "One command to run all tests", severity: "info" },
   { id: "F1", category: "Functions", principle: "Maximum 3 arguments (use a data structure for more)", severity: "warn" },

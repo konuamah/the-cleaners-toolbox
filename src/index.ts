@@ -13,7 +13,7 @@ const statusTool = tool({
     return [
       "🟢 Clean Code plugin is alive and watching!",
       "",
-      "All systems clean. 44 rules loaded across 7 categories:",
+      "All systems clean. 45 rules loaded across 7 categories:",
       "- Comments (C1-C5) | Functions (F1-F4) | General (G1-G36)",
       "- Names (N1-N7) | Tests (T1-T9) | Debugging (D1-D4) | Planning (P1-P3)",
       "",
@@ -30,7 +30,7 @@ export const CleanCodePlugin: Plugin = async ({ client }) => {
     body: {
       service: PLUGIN_NAME,
       level: "info",
-      message: "Clean Code plugin active — 44 rules across 7 categories (C, F, G, N, T, D, P). Run `review-code` to scan for violations.",
+      message: "Clean Code plugin active — 45 rules across 7 categories (C, F, G, N, T, D, P). Run `review-code` to scan for violations.",
     },
   })
 

@@ -49,7 +49,65 @@ If a comment is worth writing, write it well:
 Who knows how old it is? Who knows if it's meaningful? Delete it.
 Version control remembers everything.
 
+## C6: Write Comments as a Scannable Narrative
+
+Write comments so someone can read **only the comments** and understand
+the full code flow — like a table of contents for the code.
+
+### Rules
+
+- Add a brief section header comment before each logical block
+- Use consistent prefixes so comments are scannable (plain sentences work)
+- Every function gets a one-line intent comment above it
+- Avoid deep technical jargon — comments should be readable by any developer
+
+### Example: Scannable
+
+```ts
+// Load user from database
+const user = await User.findById(id)
+
+// Reject if account is locked or inactive
+if (!user || user.locked) return res.status(401).end()
+
+// Verify password with constant-time comparison
+const valid = await bcrypt.compare(password, user.passwordHash)
+if (!valid) return res.status(401).end()
+
+// Generate short-lived session token
+const token = jwt.sign({ id: user.id }, secret, { expiresIn: '15m' })
+
+// Return user profile (excluding sensitive fields)
+res.json({ token, name: user.name, email: user.email })
+```
+
+### Example: Not Scannable
+
+```ts
+// Load user
+const user = await User.findById(id)
+
+// Check it
+if (!user || user.locked) return res.status(401).end()
+
+// If here, compare
+const valid = await bcrypt.compare(password, user.passwordHash)
+if (!valid) return res.status(401).end()
+
+// Gen token
+const token = jwt.sign({ id: user.id }, secret, { expiresIn: '15m' })
+
+// Send
+res.json({ token, name: user.name, email: user.email })
+```
+
+The first example tells a story. The second is cryptic — you'd need
+to read every line of code to understand what's happening.
+
 ## The Goal
 
 The best comment is the code itself. If you need a comment to explain
 what code does, refactor first, comment last.
+
+When you do write comments, make them scannable — the reader should
+grasp the full flow from comments alone.
