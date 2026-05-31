@@ -1,11 +1,12 @@
-# Clean Code Skills for AI Agents
+# The Cleaner's Toolbox
 
+[![npm version](https://img.shields.io/npm/v/opencode-clean-code-plugin)](https://www.npmjs.com/package/opencode-clean-code-plugin)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-Compatible-blue)](https://agentskills.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-**Teach your AI to write code that doesn't suck.**
+**Skills and an OpenCode plugin that teach your AI to write code that doesn't suck.**
 
-This repository contains [Agent Skills](https://agentskills.io) that enforce Robert C. Martin's *Clean Code* principles. They work with Google Antigravity, Anthropic's Claude Code, and any agent that supports the Agent Skills standard.
+This repository contains [Agent Skills](https://agentskills.io) that enforce Robert C. Martin's *Clean Code* principles, plus an [OpenCode](https://opencode.ai) plugin for runtime enforcement. They work with Google Antigravity, Anthropic's Claude Code, OpenCode, and any agent that supports the Agent Skills standard.
 
 These skills are **language-agnostic** — they apply to any programming language.
 
@@ -31,7 +32,7 @@ These skills encode battle-tested solutions to exactly these problems — direct
 | `clean-names` | Descriptive, unambiguous naming | N1-N7 |
 | `clean-planning` | Design-first methodology, written plans, validate against standards | P1-P3 |
 | `clean-debugging` | Scientific debugging: reproduce, verify, fix, validate | D1-D4 |
-| `security-planner` | Security-first backend development with S.A.F.E. framework | 7 Dynamic Security Rules |
+| `security-planner` | Security-first development with S.A.F.E. framework | 7 Dynamic Security Rules |
 | `clean-tests` | Fast, thorough, boundary-aware tests | T1-T9 |
 
 Use the master skill for comprehensive coverage, or individual skills for targeted enforcement.
@@ -74,10 +75,10 @@ cp -r skills/* ~/.gemini/antigravity/skills/
 **Quick install** (global, one command):
 
 ```bash
-git clone https://github.com/ertugrul-dmr/clean-code-skills.git /tmp/clean-code-skills && \
+git clone https://github.com/konuamah/the-cleaners-toolbox.git /tmp/the-cleaners-toolbox && \
 mkdir -p ~/.gemini/antigravity/skills && \
-cp -r /tmp/clean-code-skills/skills/* ~/.gemini/antigravity/skills/ && \
-rm -rf /tmp/clean-code-skills
+cp -r /tmp/the-cleaners-toolbox/skills/* ~/.gemini/antigravity/skills/ && \
+rm -rf /tmp/the-cleaners-toolbox
 ```
 
 ### Anthropic Claude Code
@@ -100,10 +101,10 @@ cp -r skills/* ~/.claude/skills/
 **Quick install** (global, one command):
 
 ```bash
-git clone https://github.com/ertugrul-dmr/clean-code-skills.git /tmp/clean-code-skills && \
+git clone https://github.com/konuamah/the-cleaners-toolbox.git /tmp/the-cleaners-toolbox && \
 mkdir -p ~/.claude/skills && \
-cp -r /tmp/clean-code-skills/skills/* ~/.claude/skills/ && \
-rm -rf /tmp/clean-code-skills
+cp -r /tmp/the-cleaners-toolbox/skills/* ~/.claude/skills/ && \
+rm -rf /tmp/the-cleaners-toolbox
 ```
 
 **Verify**
@@ -122,12 +123,12 @@ Re-run the Quick install command to pull the latest version. It overwrites the s
 If you expect to update often, symlink instead of copy:
 
 ```bash
-git clone https://github.com/ertugrul-dmr/clean-code-skills.git ~/src/clean-code-skills
-cd ~/src/clean-code-skills/skills
+git clone https://github.com/konuamah/the-cleaners-toolbox.git ~/src/the-cleaners-toolbox
+cd ~/src/the-cleaners-toolbox/skills
 for d in */; do ln -sfn "$PWD/${d%/}" "$HOME/.claude/skills/${d%/}"; done
 ```
 
-Then `git pull` in `~/src/clean-code-skills` refreshes every skill.
+Then `git pull` in `~/src/the-cleaners-toolbox` refreshes every skill.
 
 **Uninstall**
 
@@ -175,7 +176,7 @@ cp -r skills/* ~/.config/opencode/skills/
 Or symlink for automatic updates:
 
 ```bash
-cd ~/src/clean-code-skills/skills
+cd ~/src/the-cleaners-toolbox/skills
 for d in */; do ln -sfn "$PWD/${d%/}" "$HOME/.config/opencode/skills/${d%/}"; done
 ```
 
