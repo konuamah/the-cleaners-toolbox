@@ -1,0 +1,45 @@
+{
+  "name": "opencode-clean-code-plugin",
+  "version": "0.1.0",
+  "description": "Clean Code skills + plugin for OpenCode. Enforces naming, functions, comments, DRY, planning, debugging, and testing standards.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist/",
+    "skills/",
+    "src/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "prepare": "npm run build"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "opencode",
+    "plugin",
+    "clean-code",
+    "software-craftsmanship"
+  ],
+  "homepage": "https://github.com/ertugrul-dmr/clean-code-skills",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ertugrul-dmr/clean-code-skills.git"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@opencode-ai/plugin": "^1.0.0",
+    "typescript": "^5.7.0"
+  }
+}

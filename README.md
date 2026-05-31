@@ -7,6 +7,8 @@
 
 This repository contains [Agent Skills](https://agentskills.io) that enforce Robert C. Martin's *Clean Code* principles. They work with Google Antigravity, Anthropic's Claude Code, and any agent that supports the Agent Skills standard.
 
+These skills are **language-agnostic** — they apply to any programming language.
+
 ## Why?
 
 AI generates code fast, but research shows it also generates technical debt fast:
@@ -15,43 +17,24 @@ AI generates code fast, but research shows it also generates technical debt fast
 - **Carnegie Mellon**: +30% static analysis warnings, +41% code complexity after Cursor adoption
 - **Google DORA**: Negative relationship between AI adoption and software delivery stability
 
-These skills encode battle-tested solutions to exactly these problems—directly into your AI workflow.
+These skills encode battle-tested solutions to exactly these problems — directly into your AI workflow.
 
 ## What's Included
 
-| Track | Skill | Description | Rules |
-|-------|-------|-------------|-------|
-| Python | `boy-scout` | **Orchestrator**—always leave code cleaner than you found it | Coordinates all skills |
-| Python | `python-clean-code` | **Master skill** with all 66 rules | C1-C5, E1-E2, F1-F4, G1-G36, N1-N7, P1-P3, T1-T9 |
-| Python | `clean-comments` | Minimal, accurate commenting | C1-C5 |
-| Python | `clean-functions` | Small, focused, obvious functions | F1-F4 |
-| Python | `clean-general` | Core principles (DRY, single responsibility) | G5, G16, G23, G25, G30, G36 |
-| Python | `clean-names` | Descriptive, unambiguous naming | N1-N7 |
-| Python | `clean-tests` | Fast, thorough, boundary-aware tests | T1-T9 |
-| TypeScript | `boy-scout` | **Orchestrator**—always leave code cleaner than you found it | Coordinates all skills |
-| TypeScript | `typescript-clean-code` | **Master skill** with all 66 rules | C1-C5, E1-E2, F1-F4, G1-G36, N1-N7, TS1-TS3, T1-T9 |
-| TypeScript | `clean-comments` | Minimal, accurate commenting | C1-C5 |
-| TypeScript | `clean-functions` | Small, focused, obvious functions | F1-F4 |
-| TypeScript | `clean-general` | Core principles (DRY, single responsibility) | G5, G16, G23, G25, G30, G36 |
-| TypeScript | `clean-names` | Descriptive, unambiguous naming | N1-N7 |
-| TypeScript | `clean-tests` | Fast, thorough, boundary-aware tests | T1-T9 |
+| Skill | Description | Rules |
+|-------|-------------|-------|
+| `boy-scout` | **Orchestrator** — always leave code cleaner than you found it | Coordinates all skills |
+| `clean-code` | **Master skill** with all rules | C1-C5, E1-E2, F1-F4, G1-G36, D1-D4, P1-P3, N1-N7, T1-T9 |
+| `clean-comments` | Minimal, accurate commenting | C1-C5 |
+| `clean-functions` | Small, focused, obvious functions | F1-F4 |
+| `clean-general` | Core principles (DRY, single responsibility) | G5, G16, G23, G25, G30, G36 |
+| `clean-names` | Descriptive, unambiguous naming | N1-N7 |
+| `clean-planning` | Design-first methodology, written plans, validate against standards | P1-P3 |
+| `clean-debugging` | Scientific debugging: reproduce, verify, fix, validate | D1-D4 |
+| `security-planner` | Security-first backend development with S.A.F.E. framework | 7 Dynamic Security Rules |
+| `clean-tests` | Fast, thorough, boundary-aware tests | T1-T9 |
 
 Use the master skill for comprehensive coverage, or individual skills for targeted enforcement.
-
-### Choose Your Language
-
-Pick one track and copy only that track's skills:
-
-> [!WARNING]
-> Install only one language track per skills directory. Python and TypeScript tracks reuse the same skill names (`boy-scout`, `clean-functions`, etc.). Installing both together can make the agent load conflicting instructions and behave inconsistently.
-
-```bash
-# Python track
-cp -r skills/python/* <YOUR_SKILLS_DIR>/
-
-# TypeScript track
-cp -r skills/typescript/* <YOUR_SKILLS_DIR>/
-```
 
 ### The Boy Scout Rule
 
@@ -59,13 +42,17 @@ The `boy-scout` skill embodies Clean Code's core philosophy:
 
 > "Always check a module in cleaner than when you checked it out."
 
-You don't have to make code perfect—just **a little bit better** with every touch. The `boy-scout` skill orchestrates the others, ensuring every code interaction leaves a trail of small improvements.
+You don't have to make code perfect — just **a little bit better** with every touch. The `boy-scout` skill orchestrates the others, ensuring every code interaction leaves a trail of small improvements.
 
 ---
 
 ## Installation
 
-Install only one language track per destination directory (`.agent/skills`, `.claude/skills`, `~/.claude/skills`, etc.).
+Copy the skills to your agent's skills directory:
+
+```bash
+cp -r skills/* <YOUR_SKILLS_DIR>/
+```
 
 ### Google Antigravity
 
@@ -74,39 +61,22 @@ Install only one language track per destination directory (`.agent/skills`, `.cl
 ```bash
 # From your project root
 mkdir -p .agent/skills
-# Python track
-cp -r skills/python/* .agent/skills/
-
-# TypeScript track
-cp -r skills/typescript/* .agent/skills/
+cp -r skills/* .agent/skills/
 ```
 
 **Global** (applies to all projects):
 
 ```bash
 mkdir -p ~/.gemini/antigravity/skills
-# Python track
-cp -r skills/python/* ~/.gemini/antigravity/skills/
-
-# TypeScript track
-cp -r skills/typescript/* ~/.gemini/antigravity/skills/
+cp -r skills/* ~/.gemini/antigravity/skills/
 ```
 
-**Quick install** (global, one command) — pick one track:
+**Quick install** (global, one command):
 
 ```bash
-# Python track
 git clone https://github.com/ertugrul-dmr/clean-code-skills.git /tmp/clean-code-skills && \
 mkdir -p ~/.gemini/antigravity/skills && \
-cp -r /tmp/clean-code-skills/skills/python/* ~/.gemini/antigravity/skills/ && \
-rm -rf /tmp/clean-code-skills
-```
-
-```bash
-# TypeScript track
-git clone https://github.com/ertugrul-dmr/clean-code-skills.git /tmp/clean-code-skills && \
-mkdir -p ~/.gemini/antigravity/skills && \
-cp -r /tmp/clean-code-skills/skills/typescript/* ~/.gemini/antigravity/skills/ && \
+cp -r /tmp/clean-code-skills/skills/* ~/.gemini/antigravity/skills/ && \
 rm -rf /tmp/clean-code-skills
 ```
 
@@ -117,39 +87,22 @@ rm -rf /tmp/clean-code-skills
 ```bash
 # From your project root
 mkdir -p .claude/skills
-# Python track
-cp -r skills/python/* .claude/skills/
-
-# TypeScript track
-cp -r skills/typescript/* .claude/skills/
+cp -r skills/* .claude/skills/
 ```
 
 **Global**:
 
 ```bash
 mkdir -p ~/.claude/skills
-# Python track
-cp -r skills/python/* ~/.claude/skills/
-
-# TypeScript track
-cp -r skills/typescript/* ~/.claude/skills/
+cp -r skills/* ~/.claude/skills/
 ```
 
-**Quick install** (global, one command) — pick one track:
+**Quick install** (global, one command):
 
 ```bash
-# Python track
 git clone https://github.com/ertugrul-dmr/clean-code-skills.git /tmp/clean-code-skills && \
 mkdir -p ~/.claude/skills && \
-cp -r /tmp/clean-code-skills/skills/python/* ~/.claude/skills/ && \
-rm -rf /tmp/clean-code-skills
-```
-
-```bash
-# TypeScript track
-git clone https://github.com/ertugrul-dmr/clean-code-skills.git /tmp/clean-code-skills && \
-mkdir -p ~/.claude/skills && \
-cp -r /tmp/clean-code-skills/skills/typescript/* ~/.claude/skills/ && \
+cp -r /tmp/clean-code-skills/skills/* ~/.claude/skills/ && \
 rm -rf /tmp/clean-code-skills
 ```
 
@@ -157,21 +110,20 @@ rm -rf /tmp/clean-code-skills
 
 In a running Claude Code session, confirm the skills loaded:
 
-- Ask `What skills are available?` — you should see `boy-scout`, `clean-comments`, `clean-functions`, `clean-general`, `clean-names`, `clean-tests`, and `python-clean-code` in the list.
+- Ask `What skills are available?` — you should see `boy-scout`, `clean-code`, `clean-comments`, `clean-functions`, `clean-general`, `clean-names`, `clean-planning`, `clean-debugging`, `security-planner`, and `clean-tests` in the list.
 - Or direct-invoke one: `/boy-scout` should load the Boy Scout skill explicitly.
 
 Skills hot-reload inside an existing `~/.claude/skills/` directory — no restart needed. If you created the directory for the first time during this session, restart Claude Code once so it starts watching it.
 
 **Update**
 
-Re-run the Quick install command to pull the latest version. It overwrites the seven skill directories and leaves any other skills untouched.
+Re-run the Quick install command to pull the latest version. It overwrites the skill directories and leaves any other skills untouched.
 
 If you expect to update often, symlink instead of copy:
 
 ```bash
 git clone https://github.com/ertugrul-dmr/clean-code-skills.git ~/src/clean-code-skills
-# Pick one track — swap `python` for `typescript` to use the TS track.
-cd ~/src/clean-code-skills/skills/python
+cd ~/src/clean-code-skills/skills
 for d in */; do ln -sfn "$PWD/${d%/}" "$HOME/.claude/skills/${d%/}"; done
 ```
 
@@ -180,12 +132,52 @@ Then `git pull` in `~/src/clean-code-skills` refreshes every skill.
 **Uninstall**
 
 ```bash
-rm -rf ~/.claude/skills/{boy-scout,clean-comments,clean-functions,clean-general,clean-names,clean-tests,python-clean-code}
+rm -rf ~/.claude/skills/{boy-scout,clean-code,clean-comments,clean-functions,clean-general,clean-names,clean-planning,clean-debugging,security-planner,clean-tests}
 ```
 
 ### Other Agent Skills-Compatible Tools
 
 The skills follow the [Agent Skills](https://agentskills.io) open standard. Check your tool's documentation for the skills directory location, then copy the `skills/` folder contents there.
+
+## OpenCode Plugin
+
+This package also includes an OpenCode plugin (`opencode-clean-code-plugin`) that provides runtime clean-code enforcement — heuristic scanning, rule lookup, and session compaction.
+
+### Plugin Features
+
+| Feature | Description |
+|---------|-------------|
+| `review-code` tool | Scan files/directories for magic numbers (G25), too many params (F1), flag args (F3), commented-out code (C5), single-letter names (N1), deep nesting (G30), dead functions (F4) |
+| `explain-rule` tool | Look up any clean-code rule by ID (e.g., `G25`, `D2`, `P1`) for its description and severity |
+| Auto-scan on write | Heuristics run automatically after file writes; violations logged without blocking |
+| Compaction injection | Active clean-code rules preserved across session compaction so the agent doesn't drift |
+
+### Install as Plugin
+
+Add to your `opencode.json` (global or project-level):
+
+```json
+{
+  "plugin": ["opencode-clean-code-plugin"]
+}
+```
+
+Restart OpenCode. The plugin installs automatically via OpenCode's plugin manager and registers the `review-code` and `explain-rule` tools alongside the skills.
+
+### Install Skills
+
+Copy the skills directory to your OpenCode skills path:
+
+```bash
+cp -r skills/* ~/.config/opencode/skills/
+```
+
+Or symlink for automatic updates:
+
+```bash
+cd ~/src/clean-code-skills/skills
+for d in */; do ln -sfn "$PWD/${d%/}" "$HOME/.config/opencode/skills/${d%/}"; done
+```
 
 ---
 
@@ -199,10 +191,10 @@ Once installed, skills activate automatically based on context. Ask your agent t
 
 ### Example
 
-**Before** (10 violations):
+**Before** (multiple violations):
 
 ```python
-from utils import *  # P1
+from utils import *  # Wildcard import
 
 # Author: John, Modified: 2024-01-15  # C1
 def proc(d, t, flag=False):  # N1, F1, F3
@@ -249,35 +241,7 @@ def process_transactions_without_tax(transactions: list[Transaction]) -> list[fl
     return [t.value for t in transactions]
 ```
 
-**After (TypeScript track)**:
-
-```ts
-type TransactionType = "CA" | "NY"
-
-const TAX_RATE_CA = 0.0825
-const TAX_RATE_NY = 0.05
-
-type Transaction = {
-  value: number
-  type: TransactionType
-}
-
-function applyTax(transaction: Transaction): number {
-  const taxRates: Record<TransactionType, number> = {
-    CA: TAX_RATE_CA,
-    NY: TAX_RATE_NY,
-  }
-  return transaction.value * (1 + taxRates[transaction.type])
-}
-
-function processTransactionsWithTax(transactions: Transaction[]): number[] {
-  return transactions.map(applyTax)
-}
-
-function processTransactionsWithoutTax(transactions: Transaction[]): number[] {
-  return transactions.map((transaction) => transaction.value)
-}
-```
+The same principles apply to any language — the skills focus on the concepts, not the syntax.
 
 ---
 
@@ -286,11 +250,17 @@ function processTransactionsWithoutTax(transactions: Transaction[]): number[] {
 ### Comments (C1-C5)
 | Rule | Principle |
 |------|-----------|
-| C1 | No metadata in comments (use Git) |
+| C1 | No metadata in comments (use version control) |
 | C2 | Delete obsolete comments immediately |
 | C3 | No redundant comments |
 | C4 | Write comments well if you must |
 | C5 | Never commit commented-out code |
+
+### Environment (E1-E2)
+| Rule | Principle |
+|------|-----------|
+| E1 | One command to build |
+| E2 | One command to test |
 
 ### Functions (F1-F4)
 | Rule | Principle |
@@ -307,9 +277,9 @@ function processTransactionsWithoutTax(transactions: Transaction[]): number[] {
 | G2 | Implement expected behavior |
 | G3 | Handle boundary conditions |
 | G4 | Don't override safeties |
-| G5 | DRY—no duplication |
+| G5 | DRY — no duplication |
 | G6 | Consistent abstraction levels |
-| G7 | Base classes don't know children |
+| G7 | Base types don't know subtypes |
 | G8 | Minimize public interface |
 | G9 | Delete dead code |
 | G10 | Variables near usage |
@@ -327,7 +297,7 @@ function processTransactionsWithoutTax(transactions: Transaction[]): number[] {
 | G22 | Make dependencies physical |
 | G23 | Polymorphism over if/else |
 | G24 | Follow conventions (language style guide + linter/formatter) |
-| G25 | Named constants, not magic numbers |
+| G25 | Named constants, not magic values |
 | G26 | Be precise |
 | G27 | Structure over convention |
 | G28 | Encapsulate conditionals |
@@ -351,20 +321,6 @@ function processTransactionsWithoutTax(transactions: Transaction[]): number[] {
 | N6 | No encodings (no Hungarian notation) |
 | N7 | Names describe side effects |
 
-### Python-Specific (P1-P3)
-| Rule | Principle |
-|------|-----------|
-| P1 | No wildcard imports |
-| P2 | Use Enums, not magic constants |
-| P3 | Type hints on public interfaces |
-
-### TypeScript-Specific (TS1-TS3)
-| Rule | Principle |
-|------|-----------|
-| TS1 | Keep imports explicit and stable |
-| TS2 | Use enums or literal unions, not magic constants |
-| TS3 | Type public interfaces and avoid `any` at boundaries |
-
 ### Tests (T1-T9)
 | Rule | Principle |
 |------|-----------|
@@ -384,14 +340,14 @@ function processTransactionsWithoutTax(transactions: Transaction[]): number[] {
 
 ### Using Individual Skills
 
-Don't need all 66 rules? Copy only the skills you want:
+Don't need all rules? Copy only the skills you want:
 
 ```bash
 # Just function rules
-cp -r skills/python/clean-functions ~/.gemini/antigravity/skills/
+cp -r skills/clean-functions ~/.gemini/antigravity/skills/
 
-# Just comment rules  
-cp -r skills/typescript/clean-comments ~/.claude/skills/
+# Just comment rules
+cp -r skills/clean-comments ~/.claude/skills/
 ```
 
 ### Extending Skills
@@ -400,16 +356,10 @@ Add your own rules by editing the `SKILL.md` files or creating new skill folders
 
 ```
 skills/
-├── python/
-│   ├── python-clean-code/
-│   │   └── SKILL.md
-│   └── clean-comments/
-│       └── SKILL.md
-├── typescript/
-│   ├── typescript-clean-code/
-│   │   └── SKILL.md
-│   └── clean-comments/
-│       └── SKILL.md
+├── clean-code/
+│   └── SKILL.md
+├── clean-comments/
+│   └── SKILL.md
 └── my-team-standards/      # Your custom skill
     └── SKILL.md
 ```
@@ -420,10 +370,10 @@ This repository does not ship a `scripts/` folder or lint scripts by default.
 If you want stricter enforcement, create your own scripts inside the skill folder.
 
 ```
-skills/python/python-clean-code/
+skills/clean-code/
 ├── SKILL.md
 └── scripts/
-    └── lint.py
+    └── lint.sh
 ```
 
 ---
@@ -436,7 +386,7 @@ Skills use **Progressive Disclosure**:
 2. **Activation**: When your request matches a description, full instructions load
 3. **Execution**: Scripts and templates load only when needed
 
-This keeps the agent fast—it's not thinking about database migrations when you're writing a React component.
+This keeps the agent fast — it's not thinking about database migrations when you're writing a React component.
 
 ---
 
@@ -444,8 +394,7 @@ This keeps the agent fast—it's not thinking about database migrations when you
 
 PRs welcome! Some ideas:
 
-- [ ] Keep Python/TypeScript parity as rules evolve
-- [ ] Additional language support (Go, Rust)
+- [ ] Additional language-specific adaptations
 - [ ] Integration tests
 - [ ] Pre-commit hooks
 - [ ] IDE extensions

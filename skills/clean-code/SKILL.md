@@ -1,11 +1,11 @@
 ---
-name: python-clean-code
-description: Use when writing, fixing, editing, reviewing, or refactoring any Python code. Enforces Robert Martin's complete Clean Code catalog—naming, functions, comments, DRY, and boundary conditions.
+name: clean-code
+description: Use when writing, fixing, editing, reviewing, or refactoring any code. Enforces Robert Martin's complete Clean Code catalog—naming, functions, comments, DRY, and boundary conditions.
 ---
 
-# Clean Python: Complete Reference
+# Clean Code: Complete Reference
 
-Enforces all Clean Code principles from Robert C. Martin's Chapter 17, adapted for Python.
+Enforces all Clean Code principles from Robert C. Martin's Chapter 17.
 
 ## Comments (C1-C5)
 - C1: No metadata in comments (use Git)
@@ -15,13 +15,13 @@ Enforces all Clean Code principles from Robert C. Martin's Chapter 17, adapted f
 - C5: Never commit commented-out code
 
 ## Environment (E1-E2)
-- E1: One command to build (`pip install -e ".[dev]"`)
-- E2: One command to test (`pytest`)
+- E1: One command to build the project
+- E2: One command to run all tests
 
 ## Functions (F1-F4)
-- F1: Maximum 3 arguments (use dataclasses for more)
-- F2: No output arguments (return values)
-- F3: No flag arguments (split functions)
+- F1: Maximum 3 arguments (use a data structure for more)
+- F2: No output arguments (return new values instead of mutating inputs)
+- F3: No flag arguments (split into separate functions)
 - F4: Delete dead functions
 
 ## General (G1-G36)
@@ -29,9 +29,9 @@ Enforces all Clean Code principles from Robert C. Martin's Chapter 17, adapted f
 - G2: Implement expected behavior
 - G3: Handle boundary conditions
 - G4: Don't override safeties
-- G5: DRY - no duplication
+- G5: DRY — no duplication
 - G6: Consistent abstraction levels
-- G7: Base classes don't know children
+- G7: Base types don't know their subtypes
 - G8: Minimize public interface
 - G9: Delete dead code
 - G10: Variables near usage
@@ -47,9 +47,9 @@ Enforces all Clean Code principles from Robert C. Martin's Chapter 17, adapted f
 - G20: Function names say what they do
 - G21: Understand the algorithm
 - G22: Make dependencies physical
-- G23: Prefer polymorphism to if/else
-- G24: Follow conventions (PEP 8)
-- G25: Named constants, not magic numbers
+- G23: Prefer polymorphism to if/else chains
+- G24: Follow conventions (language style guide + linter/formatter)
+- G25: Named constants, not magic numbers/strings
 - G26: Be precise
 - G27: Structure over convention
 - G28: Encapsulate conditionals
@@ -62,11 +62,16 @@ Enforces all Clean Code principles from Robert C. Martin's Chapter 17, adapted f
 - G35: Config at high levels
 - G36: Law of Demeter (no train wrecks)
 
-## Python-Specific (P1-P3)
-These adapt the Java-specific rules (J1-J3) to Python conventions:
-- P1: No wildcard imports (`from x import *`) — opposite of Java, per PEP 8
-- P2: Use Enums, not magic constants — same principle as J3
-- P3: Type hints on public interfaces — Python's equivalent of Java's static typing
+## Debugging (D1-D4)
+- D1: Reproduce and isolate — replicate consistently, binary search, minimize footprint
+- D2: Verify assumptions — use a debugger, read errors, run `review-code`, rubber duck
+- D3: Apply one fix at a time — single hypothesis, minimal change, verify before moving on
+- D4: Validate with regression test — prove the fix, write a test, clean up diagnostics
+
+## Planning (P1-P3)
+- P1: Design before code — explore, present approach, get approval before implementing
+- P2: Write plans, not wishes — every multi-step task gets a written plan with complete code and verification steps
+- P3: Validate against standards — verify code meets clean-code rules before marking any task done
 
 ## Names (N1-N7)
 - N1: Choose descriptive names
@@ -74,7 +79,7 @@ These adapt the Java-specific rules (J1-J3) to Python conventions:
 - N3: Use standard nomenclature
 - N4: Unambiguous names
 - N5: Name length matches scope
-- N6: No encodings
+- N6: No encodings (no Hungarian notation)
 - N7: Names describe side effects
 
 ## Tests (T1-T9)
@@ -102,25 +107,32 @@ These adapt the Java-specific rules (J1-J3) to Python conventions:
 | | G9 | Delete dead code |
 | | G16 | No obscured intent |
 | | G23 | Polymorphism over if/else |
-| | G25 | Named constants, not magic numbers |
+| | G25 | Named constants, not magic values |
 | | G30 | Functions do one thing |
 | | G36 | Law of Demeter (one dot) |
 | **Names** | N1 | Descriptive names |
 | | N5 | Name length matches scope |
+| **Debugging** | D1 | Reproduce and isolate |
+| | D2 | Verify assumptions with tooling |
+| | D3 | One fix at a time |
+| | D4 | Validate with regression test |
+| **Planning** | P1 | Design before code |
+| | P2 | Write plans, not wishes |
+| | P3 | Validate against standards |
 | **Tests** | T5 | Test boundary conditions |
 | | T9 | Tests must be fast |
 
 ## Anti-Patterns (Don't → Do)
 
-| ❌ Don't | ✅ Do |
-|----------|-------|
+| Don't | Do |
+|-------|-----|
 | Comment every line | Delete obvious comments |
 | Helper for one-liner | Inline the code |
-| `from x import *` | Explicit imports |
-| Magic number `86400` | `SECONDS_PER_DAY = 86400` |
-| `process(data, True)` | `process_verbose(data)` |
+| Wildcard imports everywhere | Explicit imports |
+| Magic value `86400` | Named constant `SECONDS_PER_DAY` |
+| `process(data, true)` | `processWithTax(data)` / `process_verbose(data)` |
 | Deep nesting | Guard clauses, early returns |
-| `obj.a.b.c.value` | `obj.get_value()` |
+| `obj.a.b.c.value` | `obj.getValue()` |
 | 100+ line function | Split by responsibility |
 
 ## AI Behavior
