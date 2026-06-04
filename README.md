@@ -25,15 +25,15 @@ These skills encode battle-tested solutions to exactly these problems — direct
 | Skill | Description | Rules |
 |-------|-------------|-------|
 | `boy-scout` | **Orchestrator** — always leave code cleaner than you found it | Coordinates all skills |
-| `clean-code` | **Master skill** with all rules | C1-C5, E1-E2, F1-F4, G1-G36, D1-D4, P1-P3, N1-N7, T1-T9 |
+| `clean-code` | **Master skill** with all rules | C1-C5, E1-E8, F1-F4, G1-G36, D1-D4, P1-P4, N1-N7, T1-T10 |
 | `clean-comments` | Minimal, accurate commenting | C1-C5 |
 | `clean-functions` | Small, focused, obvious functions | F1-F4 |
 | `clean-general` | Core principles (DRY, single responsibility) | G5, G16, G23, G25, G30, G36 |
 | `clean-names` | Descriptive, unambiguous naming | N1-N7 |
-| `clean-planning` | Design-first methodology, written plans, validate against standards | P1-P3 |
+| `clean-planning` | Design-first methodology, written plans, validate against standards, UX+System path documentation | P1-P4 |
 | `clean-debugging` | Scientific debugging: reproduce, verify, fix, validate | D1-D4 |
 | `security-planner` | Security-first development with S.A.F.E. framework | 7 Dynamic Security Rules |
-| `clean-tests` | Fast, thorough, boundary-aware tests | T1-T9 |
+| `clean-tests` | Fast, thorough, boundary-aware tests with feature flag coverage | T1-T10 |
 
 Use the master skill for comprehensive coverage, or individual skills for targeted enforcement.
 
@@ -257,11 +257,17 @@ The same principles apply to any language — the skills focus on the concepts, 
 | C4 | Write comments well if you must |
 | C5 | Never commit commented-out code |
 
-### Environment (E1-E2)
+### Environment (E1-E8)
 | Rule | Principle |
 |------|-----------|
 | E1 | One command to build |
 | E2 | One command to test |
+| E3 | One CI command to verify (lint, typecheck, test, build) |
+| E4 | Feature flags for new capabilities (deployment ≠ release) |
+| E5 | Isolate blast radius (failures can't cross module boundaries) |
+| E6 | Observable by default (structured logs, request IDs, error boundaries, metrics) |
+| E7 | Staging verified before production |
+| E8 | Gradual rollout with tested rollback procedure |
 
 ### Functions (F1-F4)
 | Rule | Principle |
@@ -322,7 +328,15 @@ The same principles apply to any language — the skills focus on the concepts, 
 | N6 | No encodings (no Hungarian notation) |
 | N7 | Names describe side effects |
 
-### Tests (T1-T9)
+### Planning (P1-P4)
+| Rule | Principle |
+|------|-----------|
+| P1 | Design before code |
+| P2 | Write plans, not wishes |
+| P3 | Validate against standards |
+| P4 | Plan UX + System happy and negative paths |
+
+### Tests (T1-T10)
 | Rule | Principle |
 |------|-----------|
 | T1 | Test everything that could break |
@@ -334,6 +348,7 @@ The same principles apply to any language — the skills focus on the concepts, 
 | T7 | Look for patterns in failures |
 | T8 | Check coverage when debugging |
 | T9 | Tests must be fast (<100ms) |
+| T10 | Feature flag tests (flag on/off) |
 
 ---
 

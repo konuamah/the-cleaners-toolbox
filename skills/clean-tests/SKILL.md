@@ -118,6 +118,37 @@ test("user creation"):
     assert user.name == "Alice"
 ```
 
+## T10: Feature Flag Tests
+
+Any code gated behind a feature flag must have tests that verify behavior with the flag both enabled and disabled. This prevents the flag itself from being the source of bugs.
+
+```
+// Bad — only tests with flag enabled
+test("checkout with new flow"):
+    enableFlag("new-checkout-flow")
+    result = checkout(cart)
+    assert result.success
+
+// Good — tests both states
+test("checkout with new flow enabled"):
+    enableFlag("new-checkout-flow")
+    result = checkout(cart)
+    assert result.success
+    assert result.receiptId != null
+
+test("checkout with new flow disabled"):
+    disableFlag("new-checkout-flow")
+    result = checkout(cart)
+    assert result.success
+    assert result.receiptId == null  // old flow doesn't return receipt
+```
+
+When testing flagged code:
+- **Default-off**: Test the default state (users who haven't received the flag)
+- **Default-on**: Test the released state (users who have the flag)
+- **Toggle at boundaries**: Test flipping the flag at runtime if supported
+- **Cleanup**: Reset flag state between tests to avoid cross-test contamination
+
 ## Test Organization
 
 ### F.I.R.S.T. Principles
@@ -172,3 +203,4 @@ test("user can be activated"):
 | T7 | Look for patterns in failures |
 | T8 | Check coverage when debugging |
 | T9 | Tests must be fast (<100ms) |
+| T10 | Feature flag tests (flag on/off) |

@@ -38,6 +38,10 @@ Every time you touch code, look for **at least one small improvement**:
 - Remove duplication (DRY) → triggers `clean-general`
 - Add missing boundary checks
 - Improve test coverage → triggers `clean-tests`
+- Check if plan documents happy and negative paths appropriate to complexity (P4) → triggers `clean-planning`
+- Check if new code is isolated (no cross-module coupling) (E5)
+- Check if error paths include structured logging or error boundaries (E6)
+- Check if new feature is gated behind a flag (E4) and if tests cover both flag states (T10)
 
 ## The Rule in Practice
 

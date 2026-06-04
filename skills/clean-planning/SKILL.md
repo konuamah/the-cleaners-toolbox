@@ -32,16 +32,19 @@ Do not write implementation code until you have explored the problem and the use
 // Simple: a new utility function in an existing module
 "Add this to utils. Format: ISO-8601. Using built-in date library."
 → 15 seconds. No document needed. Just confirm the approach.
+Path docs: Optional — 1 sentence or note "no meaningful negative paths"
 
 // Medium: a new API endpoint
 "I'll add a GET /orders/:id endpoint following the existing router pattern.
 Response shape: { id, status, items, total }. Auth check at route level."
 → 1 minute. Describe the approach. Confirm before coding.
+Path docs: Required — happy path UX+System + 2-3 negative paths
 
 // Complex: a new subsystem
 Design doc → `docs/plans/<topic>-design.md`
 → 5-10 minutes. Architecture, components, data flow, error handling.
 → Save, commit, get user review before implementation.
+Path docs: Full table format for all paths
 ```
 
 ### Hard Gate
@@ -76,6 +79,8 @@ Every multi-step implementation task gets a written plan before execution starts
 - **Complete code** — Every code step includes the actual code, not placeholders or TODOs
 - **Verification steps** — How to verify each task produced the correct result
 - **Exact file paths** — No ambiguity about where changes go
+- **Paths** — Plans must satisfy the path documentation requirements in P4 (UX + System happy/negative paths)
+- **Safe delivery** — Plans must satisfy environment and rollout requirements in E3-E8 (CI, feature flags, isolation, observability, staging, gradual rollout, rollback)
 
 ### Plan File Format
 
@@ -155,6 +160,119 @@ Every task's output must pass clean-code review.
 If it doesn't, fix it before moving to the next task.
 No exceptions, no "I'll clean it up later."
 ```
+
+---
+
+## P4: Plan UX + System Happy & Negative Paths
+
+Every feature plan documents both the user-facing and system-facing journey for success and failure. This ensures the implementation covers flows before writing code.
+
+### Path Documentation Requirements
+
+Scale follows the same tiers as P1:
+
+| Tier | Requirement |
+|------|-------------|
+| **Simple** (config, README, one-file change with no logic) | Optional — 1 sentence or note "no meaningful negative paths" |
+| **Medium** (new public API surface: endpoint, exported function, CLI command) | Required — happy path UX+System inline + 2-3 negative paths |
+| **Complex** (subsystem, multi-file feature) | Required — full table format for all paths |
+
+### Happy Path
+
+Document from both perspectives:
+
+- **UX Layer** — What the user sees, clicks, and experiences:
+  ```
+  User opens form → fills valid data → submits → sees success toast → redirected to dashboard
+  ```
+- **System Layer** — What the backend does and what state it transitions through:
+  ```
+  POST /orders → validator pass → DB insert → 201 → notification queued
+  ```
+
+### Negative Paths
+
+Two categories with different recovery audiences:
+
+| Category | Description | Recovery Audience |
+|----------|-------------|-------------------|
+| **Expected** | Handled gracefully — part of normal operation (validation errors, 404s, auth failures, rate limits, conflicts) | **User recovers** — error message with fix instructions, inline field errors, retry button |
+| **Exceptional** | Shouldn't happen but must be safe (DB connection drop, downstream timeout, out-of-memory, partial writes) | **System recovers** — circuit breaker, retry policy, rollback, fallback response |
+
+For each negative path, document:
+
+| Field | UX Layer | System Layer |
+|-------|----------|--------------|
+| **Detection** | How does the user perceive the problem? (toast, inline error, modal, disabled state, banner) | How is the condition detected? (error code, timeout, exception type, status check) |
+| **Behavior** | What UX elements does the user see and interact with? (field highlights, button states, retry flows, navigation) | What happens internally? (retry, fallback, rollback, queue, circuit open) |
+| **Recovery** | How does the user get back on track? (edit field, retry, relogin, contact support) | What's the resulting system state? (consistent, degraded, safe, idempotent) |
+
+### Rollout & Rollback Paths
+
+For medium and complex features, document how this feature reaches users and how it can be removed:
+
+| Aspect | What to Document | Related Rule |
+|--------|------------------|--------------|
+| **Feature flag** | What flag gates this feature? What are its possible states (on/off/percentage)? | E4 |
+| **Isolation** | What modules/services does this feature touch? If it fails, what else breaks? | E5 |
+| **Rollout plan** | What rollout strategy? (internal → 1% → 5% → 20% → 100%) What metrics gate each step? | E8 |
+| **Rollback procedure** | How do you revert this? Flip a flag? Revert a commit? Migrate data backward? | E8 |
+| **Observability** | What logs, metrics, and traces let you know this feature is working or broken in production? | E6 |
+| **Staging validation** | How will you validate this in a staging environment before production? | E7 |
+
+### Escape Hatch
+
+```
+If a feature has no meaningful negative paths, note that explicitly
+to confirm you checked. The goal is thinking, not box-ticking.
+```
+
+### Optional Plan Template
+
+For medium/complex plans, add `## Paths` and `## Safe Delivery` sections after the tasks:
+
+```markdown
+## Paths
+
+### Happy Path
+- **UX**: user opens form → fills valid data → submits → sees success toast → redirected
+- **System**: POST /orders → validator OK → DB insert → 201 → notification queued
+
+### Negative Paths — Expected
+| Layer | Detection | Behavior | Recovery |
+|-------|-----------|----------|----------|
+| **UX** | Inline error "Email taken" | Field highlighted red, button disabled | User edits → inline re-validation |
+| **System** | Unique constraint error | Catch → 409 response | No state change, idempotent |
+
+### Negative Paths — Exceptional
+| Layer | Detection | Behavior | Recovery |
+|-------|-----------|----------|----------|
+| **UX** | "Something went wrong" banner | Form data preserved, retry button | User clicks retry → resubmits |
+| **System** | DB connection timeout | Retry 3x exponential backoff → 503 | Connection pool restored on next request |
+
+## Safe Delivery
+
+### Feature Flag
+- Flag name: `new-checkout-flow`
+- States: off (default) → internal → 1% → 5% → 20% → 100%
+- Metrics gate: conversion rate >= current baseline at each step
+
+### Blast Radius
+- Module: `src/checkout/` — touches Order, Payment, Inventory services
+- If failed: Order service isolated, payment retries, inventory unaffected
+
+### Rollback
+- Primary: flip flag to `off` — instant, no data migration
+- Fallback: revert PR #1234 — requires DB migration revert script
+```
+
+### References
+
+- P4 applies to Medium and Complex plans per P1's scaling guide
+- Paths inform test cases (T5: boundary conditions, T10: feature flag tests)
+- Paths inform error handling implementation (G3: handle boundary conditions)
+- Paths inform user-facing error messages and states
+- Safe delivery requirements in E3-E8 (CI, feature flags, isolation, observability, staging, gradual rollout, rollback)
 
 ---
 

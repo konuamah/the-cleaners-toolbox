@@ -14,9 +14,15 @@ Enforces all Clean Code principles from Robert C. Martin's Chapter 17.
 - C4: Write comments well if you must
 - C5: Never commit commented-out code
 
-## Environment (E1-E2)
+## Environment (E1-E8)
 - E1: One command to build the project
 - E2: One command to run all tests
+- E3: One CI command to verify — lint, typecheck, test, and build must run in a single automated pipeline before merge
+- E4: Feature flags for new capabilities — deployment must not equal release. Every new feature ships behind a flag, toggle, or gate until verified
+- E5: Isolate blast radius — design services, modules, and feature boundaries so a failure in one cannot crash unrelated systems
+- E6: Observable by default — structured logs with request IDs at every module edge, error boundaries that surface actionable diagnostics, and metrics for throughput, latency, and error rate
+- E7: Staging verified before production — every deployment must pass validation in a production-like environment first
+- E8: Gradual rollout with rollback plan — releases must support canary or progressive rollout, and every release must have a tested rollback procedure
 
 ## Functions (F1-F4)
 - F1: Maximum 3 arguments (use a data structure for more)
@@ -68,10 +74,11 @@ Enforces all Clean Code principles from Robert C. Martin's Chapter 17.
 - D3: Apply one fix at a time — single hypothesis, minimal change, verify before moving on
 - D4: Validate with regression test — prove the fix, write a test, clean up diagnostics
 
-## Planning (P1-P3)
+## Planning (P1-P4)
 - P1: Design before code — explore, present approach, get approval before implementing
 - P2: Write plans, not wishes — every multi-step task gets a written plan with complete code and verification steps
 - P3: Validate against standards — verify code meets clean-code rules before marking any task done
+- P4: Plan UX + System happy and negative paths — document user-facing and system-facing success and failure flows scaled by complexity
 
 ## Names (N1-N7)
 - N1: Choose descriptive names
@@ -82,7 +89,7 @@ Enforces all Clean Code principles from Robert C. Martin's Chapter 17.
 - N6: No encodings (no Hungarian notation)
 - N7: Names describe side effects
 
-## Tests (T1-T9)
+## Tests (T1-T10)
 - T1: Test everything that could break
 - T2: Use coverage tools
 - T3: Don't skip trivial tests
@@ -92,6 +99,7 @@ Enforces all Clean Code principles from Robert C. Martin's Chapter 17.
 - T7: Look for patterns in failures
 - T8: Check coverage when debugging
 - T9: Tests must be fast (< 100ms each)
+- T10: Feature flag tests — any code gated behind a flag must have tests that verify behavior with the flag both enabled and disabled
 
 ## Quick Reference Table
 
@@ -119,8 +127,13 @@ Enforces all Clean Code principles from Robert C. Martin's Chapter 17.
 | **Planning** | P1 | Design before code |
 | | P2 | Write plans, not wishes |
 | | P3 | Validate against standards |
+| | P4 | Plan UX + System happy and negative paths |
 | **Tests** | T5 | Test boundary conditions |
 | | T9 | Tests must be fast |
+| | T10 | Feature flag tests (flag on/off) |
+| **Environment** | E3 | CI pipeline must verify |
+| | E4 | Feature flags before merge |
+| | E6 | Observable by default |
 
 ## Anti-Patterns (Don't → Do)
 
@@ -134,6 +147,11 @@ Enforces all Clean Code principles from Robert C. Martin's Chapter 17.
 | Deep nesting | Guard clauses, early returns |
 | `obj.a.b.c.value` | `obj.getValue()` |
 | 100+ line function | Split by responsibility |
+| Deploy to all users at once | Gradual rollout with canary (E8) |
+| Release without a flag | Feature flag with default-off (E4) |
+| Merge without CI passing | Automated CI pipeline must pass (E3) |
+| No logs on failure | Structured log with request ID (E6) |
+| Rollback plan = "revert the PR" | Tested rollback procedure (E8) |
 
 ## AI Behavior
 
