@@ -1,6 +1,8 @@
 ---
 name: security-planner
 description: Use when planning and building features with maximum security from day one. Activate when: building new API endpoints, starting authentication/authorization, handling data, storing secrets, managing infrastructure, or needing secure implementation guidance.
+when_to_use: |
+  Also trigger on: "security", "auth", "authentication", "authorization", "encrypt", "secrets", "API endpoint", "login", "password", "token", "JWT", "OAuth", "permissions", "RBAC", "CORS", "XSS", "SQL injection", "rate limit", "HTTPS", "SSL", "TLS", "firewall", "audit log", "PCI", "GDPR", "data privacy", "secure", "vulnerability", "OWASP", "hash", "salt", "session", "cookie", "API key", "access control", "IAM", "SSO", "2FA", "MFA". Do NOT trigger for general planning, UI styling, or copywriting tasks.
 ---
 
 # Security Planner Agent
